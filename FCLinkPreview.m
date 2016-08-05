@@ -356,7 +356,7 @@ static const NSUInteger decriptionMinimumRelevant = 5;
                         value = [NSString stringWithFormat:@"%@:%@",host.scheme,value];
                     }
                     else {
-                        value = [NSString stringWithFormat:@"%@://%@%@",host.scheme,host,value];
+                        value = [NSString stringWithFormat:@"%@://%@%@",host.scheme,host.host,value];
                     }
                     [imgs addObject:value];
                 }
