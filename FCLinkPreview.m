@@ -348,9 +348,22 @@ static const NSUInteger decriptionMinimumRelevant = 5;
         NSArray<NSString *> *images = self.result[@"images"];
         if (images.count == 0) {
             NSArray<NSString *> *values = [FCRegex pregMatchAllString:htmlCode regex:imageTagPattern index:2];
-            self.result[@"images"] = values;
-            if (values.count > 0) {
-                self.result[@"image"] = values[0];
+            NSMutableArray *imgs = [NSMutableArray arrayWithCapacity:values.count];
+            [values enumerateObjectsUsingBlock:^(NSString *value, NSUInteger idx, BOOL *stop) {
+                if ([value extendedTrim].length > 0 && ![value hasPrefix:@"https://"] && ![value hasPrefix:@"http://"] && ![value hasPrefix:@"ftp://"]) {
+                    NSURL *host = self.result[@"finalUrl"];
+                    if ([value hasPrefix:@"//"]) {
+                        value = [NSString stringWithFormat:@"%@:%@",host.scheme,value];
+                    }
+                    else {
+                        value = [NSString stringWithFormat:@"%@://%@%@",host.scheme,host,value];
+                    }
+                    [imgs addObject:value];
+                }
+            }];
+            self.result[@"images"] = imgs;
+            if (imgs.count > 0) {
+                self.result[@"image"] = imgs[0];
             }
         }
     } else {
