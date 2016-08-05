@@ -348,13 +348,9 @@ static const NSUInteger decriptionMinimumRelevant = 5;
         NSArray<NSString *> *images = self.result[@"images"];
         if (images.count == 0) {
             NSArray<NSString *> *values = [FCRegex pregMatchAllString:htmlCode regex:imageTagPattern index:2];
-            NSMutableArray *imgs = [NSMutableArray arrayWithCapacity:values.count];
-            [values enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                [imgs addObject:obj];
-            }];
-            self.result[@"images"] = imgs;
-            if (imgs.count > 0) {
-                self.result[@"image"] = imgs[0];
+            self.result[@"images"] = values;
+            if (values.count > 0) {
+                self.result[@"image"] = values[0];
             }
         }
     } else {
